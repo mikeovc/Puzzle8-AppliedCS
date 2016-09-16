@@ -109,7 +109,7 @@ public class PuzzleBoardView extends View {
                 boards.clear();
                 ArrayList<PuzzleBoard> solvePath = retrievedBoard.allPreviousBoards();
                 Collections.reverse(solvePath);
-                retrievedBoard.clearHistory();
+                retrievedBoard.reset();
                 animation = solvePath;
                 invalidate();
             }
@@ -120,6 +120,7 @@ public class PuzzleBoardView extends View {
         for (PuzzleBoard neighbour : currentBoard.neighbours()) {
             if (currentBoard.getPreviousBoard() == null ||
                     !neighbour.sameStateAs(currentBoard.getPreviousBoard())) {
+                neighbour.setPreviousBoard(currentBoard);
                 heap.add(neighbour);
             }
         }

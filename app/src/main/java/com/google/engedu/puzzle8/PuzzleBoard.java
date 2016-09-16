@@ -40,7 +40,6 @@ public class PuzzleBoard {
 
     PuzzleBoard(PuzzleBoard otherBoard) {
         steps = otherBoard.steps + 1;
-        previousBoard = otherBoard;
         tiles = (ArrayList<PuzzleTile>) otherBoard.tiles.clone();
     }
 
@@ -48,7 +47,7 @@ public class PuzzleBoard {
     public void setPreviousBoard(PuzzleBoard p) { previousBoard = p; }
 
     public void reset() {
-        // Nothing for now but you may have things to reset once you implement the solver.
+        previousBoard = null;
     }
 
     @Override
@@ -173,9 +172,5 @@ public class PuzzleBoard {
             }
         }
         return true;
-    }
-
-    public void clearHistory() {
-        previousBoard = null;
     }
 }
