@@ -104,13 +104,7 @@ public class PuzzleBoardView extends View {
         while (boards.size() != 0) {
             PuzzleBoard retrievedBoard = boards.poll();
             if (!retrievedBoard.resolved()) {
-                for (PuzzleBoard neighbour : retrievedBoard.neighbours()) {
-                    if (retrievedBoard.getPreviousBoard() == null ||
-                            !neighbour.sameStateAs(retrievedBoard.getPreviousBoard())) {
-                        neighbour.setPreviousBoard(retrievedBoard);
-                        boards.add(neighbour);
-                    }
-                }
+                addNeighbours(boards, retrievedBoard);
             } else {
                 boards.clear();
                 ArrayList<PuzzleBoard> solvePath = retrievedBoard.allPreviousBoards();
@@ -118,6 +112,15 @@ public class PuzzleBoardView extends View {
                 retrievedBoard.clearHistory();
                 animation = solvePath;
                 invalidate();
+            }
+        }
+    }
+
+    private void addNeighbours(PriorityQueue<PuzzleBoard> heap, PuzzleBoard currentBoard) {
+        for (PuzzleBoard neighbour : currentBoard.neighbours()) {
+            if (currentBoard.getPreviousBoard() == null ||
+                    !neighbour.sameStateAs(currentBoard.getPreviousBoard())) {
+                heap.add(neighbour);
             }
         }
     }
