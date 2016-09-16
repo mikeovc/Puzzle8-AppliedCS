@@ -66,6 +66,8 @@ public class PuzzleActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
+            // Resize to a square without scaling
+            imageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getWidth());
             boardView.initialize(imageBitmap);
         }
     }
