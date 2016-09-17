@@ -92,9 +92,7 @@ public class PuzzleActivity extends AppCompatActivity {
             catch (Exception e) {
                 e.printStackTrace();
             }
-            // Resize to a square before scaling in boardView
-            imageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(),
-                                              imageBitmap.getWidth());
+            cropImageToSquare();
             boardView.initialize(imageBitmap);
             deletePicHistory();
         }
@@ -112,6 +110,7 @@ public class PuzzleActivity extends AppCompatActivity {
         imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.skelly);
         boardView.initialize(imageBitmap);
     }
+
 
     private File createImageFile() throws IOException {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -146,7 +145,7 @@ public class PuzzleActivity extends AppCompatActivity {
         return rotatedImage;
     }
 
-    // Make sure photos aren't being needlessly persistently stored in phone storage:
+    // Make sure photos aren't being needlessly persistently kept in phone storage:
     private void deletePicHistory() {
         File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (dir == null) { return; }
@@ -159,5 +158,13 @@ public class PuzzleActivity extends AppCompatActivity {
             Log.d("Files", "FileName: " + file.getName());
             file.delete();
         }
+    }
+
+    // Crop to a square before scaling the image in PuzzleBoardView
+    private void cropImageToSquare() {
+        int width = imageBitmap.getWidth();
+        int height = imageBitmap.getHeight();
+        int startHeight = (height - width) / 2;
+        imageBitmap = Bitmap.createBitmap(imageBitmap, 0, startHeight, width, width);
     }
 }
